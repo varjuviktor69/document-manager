@@ -1,0 +1,17 @@
+li {
+    list-style-type: none;
+    cursor: pointer;
+}
+
+.categories-container > .categories-list > li {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+.site-menu ul {
+    display: flex;
+    gap: 10px;
+}
