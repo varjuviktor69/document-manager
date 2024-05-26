@@ -6,5 +6,8 @@
         <li>
             <a href="{{ route('categories.all') }}">Manage Categories</a>
         </li>
+        <li>
+            <a href="{{ route('files.all') }}">All files</a>
+        </li>
     </ul>
 </div>

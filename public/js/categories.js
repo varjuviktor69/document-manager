@@ -1,11 +1,14 @@
 const SELECTED_CATEGORY_EL = document.querySelector('.selected-category');
 const EDIT_FORM_EL = document.querySelector('.edit-form form');
 const CREATE_FORM_EL = document.querySelector('.create-form form');
+const FILES_LIST_EL = document.querySelector('.file-container');
 
 let selectedCategoryId = DEFAULT_CATEGORY.id;
 
-CREATE_FORM_EL.action = CREATE_ROUTE.replace(':parentId', DEFAULT_CATEGORY.id);
-EDIT_FORM_EL.action = EDIT_ROUTE.replace(':id', DEFAULT_CATEGORY.id);
+function setDefaultFormActions() {
+    CREATE_FORM_EL.action = CREATE_ROUTE.replace(':parentId', DEFAULT_CATEGORY.id);
+    EDIT_FORM_EL.action = EDIT_ROUTE.replace(':id', DEFAULT_CATEGORY.id);
+}
 
 function handleOpenAndCloseCategories() {
     document.querySelector('.categories-container li').addEventListener('click', (e) => {
@@ -24,12 +27,18 @@ function handleOpenAndCloseCategories() {
                 clickedLi.querySelector('.open-indicator').classList.toggle('hidden');
             }
 
+            if (FILES_LIST_EL) {
+                getFilesByCategory();
+            }
+
             childLis.forEach((childLi) => {
                 childLi.classList.toggle('hidden');
             });
 
-            CREATE_FORM_EL.action = CREATE_ROUTE.replace(':parentId', selectedCategoryId);
-            EDIT_FORM_EL.action = EDIT_ROUTE.replace(':id', selectedCategoryId);
+            if (CREATE_FORM_EL) {
+                CREATE_FORM_EL.action = CREATE_ROUTE.replace(':parentId', selectedCategoryId);
+                EDIT_FORM_EL.action = EDIT_ROUTE.replace(':id', selectedCategoryId);
+            }
         }
     });
 }

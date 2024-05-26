@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Category as EnumsCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
@@ -12,9 +13,14 @@ class Category extends Model
 {
     protected $guarded = [];
 
-    public $appends = ['sub_categories'];
+    public $appends = ['sub_categories',];
 
     public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function files(): HasMany
     {
         return $this->hasMany(User::class);
     }

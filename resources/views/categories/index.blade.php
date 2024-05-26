@@ -19,6 +19,7 @@
             'action' => route('categories.create', ['parentId' => ':parentId']),
         ])
     </div>
+    @include('files.form')
 @endsection
 
 @section('extraScripts')
@@ -30,12 +31,12 @@
         const CSRF_TOKEN = '{{ csrf_token() }}';
     </script>
     <script src="{{ URL::asset('js/categories.js') . env('STATIC_FILE_VERSION') }}"></script>
+    <script src="{{ URL::asset('js/files.js') . env('STATIC_FILE_VERSION') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            setDefaultFormActions();
             createCategoryTree(DEFAULT_CATEGORY);
-
             handleOpenAndCloseCategories();
-
             handleButtons();
         });
     </script>

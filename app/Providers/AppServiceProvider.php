@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Interfaces\FileService;
+use App\Services\FileServiceImpl;
 use App\Interfaces\CategoryService;
+use Illuminate\Support\Facades\Auth;
 use App\Services\CategoryServiceImpl;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(CategoryService::class, CategoryServiceImpl::class);
+        $this->app->singleton(FileService::class, FileServiceImpl::class);
     }
 
     /**
@@ -21,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->singleton(CategoryService::class, CategoryServiceImpl::class);
+        // For testing purposes
+        Auth::loginUsingId(1);
     }
 }

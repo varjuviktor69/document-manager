@@ -6,9 +6,13 @@ namespace App\Services;
 
 use App\Interfaces\CategoryService;
 use App\Models\Category;
+use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+use stdClass;
 
 class CategoryServiceImpl implements CategoryService
 {
+
     public function findBySlug(string $slug): ?Category
     {
         return Category::whereSlug($slug)->first();
@@ -20,9 +24,13 @@ class CategoryServiceImpl implements CategoryService
         $this->sort_r($category);
     }
 
-    public function delete(int $id): Category
+    public function delete(int $id): bool
     {
-        return Category::findOrFail($id)->delete();
+        $category = Category::findOrFail($id);
+        $directory = $category->directory_path;
+        Storage::deleteDirectory($directory);
+
+        return $category->delete();
     }
 
     public function update(int $id, string $name): bool
@@ -40,6 +48,22 @@ class CategoryServiceImpl implements CategoryService
             'slug' => slugify($name),
             'parent_id' => $parentId,
         ]);
+    }
+
+    public function findById(int $id): Category
+    {
+        return Category::findOrFail($id);
+    }
+
+    public function getCategoryIdsByUser(User $user): array
+    {
+        $categories = $user->categories();
+        $categoryIds = array_map(function(stdClass $category): int {
+            return $category->id;
+        }, $categories);
+        $categoryIds[] = $user->category_id;
+
+        return $categoryIds;
     }
 
     private function sort_r(Category $category): void
