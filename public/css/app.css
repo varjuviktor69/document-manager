@@ -3,6 +3,10 @@ li {
     cursor: pointer;
 }
 
+ul {
+    padding-left: 0;
+}
+
 .categories-container > .categories-list > li {
     display: block;
 }
@@ -14,4 +18,10 @@ li {
 .site-menu ul {
     display: flex;
     gap: 10px;
+}
+
+.file-list {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
 }

@@ -24,20 +24,28 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function edit(int $id): JsonResponse
+    public function edit(int $id): View
     {
-        return response()->json($this->categoryService->update(
+        $this->categoryService->update(
             $id,
             $this->request->categoryName
-        ));
+        );
+   
+        return view('categories.index', [
+            'defaultCategory' => $this->categoryService->findBySlug(Category::DEFAULT->value),
+        ]);
     }
 
-    public function create(int $parentId): JsonResponse
+    public function create(int $parentId): View
     {
-        return response()->json($this->categoryService->create(
+        $this->categoryService->create(
             $parentId,
             $this->request->categoryName
-        ));
+        );
+
+        return view('categories.index', [
+            'defaultCategory' => $this->categoryService->findBySlug(Category::DEFAULT->value),
+        ]);
     }
 
     public function delete(int $id): JsonResponse

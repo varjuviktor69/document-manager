@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +14,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table): void {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->timestamps();
+            $table->foreignIdFor(Category::class)->cascadeOnDelete();
+            $table->smallInteger('version');
+            $table->string('slug');
+            $table->string('name');
+            $table->string('extension');
         });
     }
 
@@ -24,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('files');
     }
 };

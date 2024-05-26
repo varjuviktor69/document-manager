@@ -12,6 +12,8 @@
 <body>
     @yield('content')
 
+    <script src="{{ URL::asset('js/global.js') . env('STATIC_FILE_VERSION') }}"></script>
+    <script src="{{ URL::asset('js/ajax-form.js') . env('STATIC_FILE_VERSION') }}"></script>
     @yield('extraScripts')
 </body>
 </html>

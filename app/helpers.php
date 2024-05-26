@@ -8,3 +8,8 @@ function slugify(string $text) : string
 {
     return Str::of($text)->slug('-')->toString();
 }
+
+function getDefaultVersionSuffix() : string
+{
+    return '-v1';
+}

@@ -1,34 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use App\Models\Category;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
 
-class User extends Authenticatable
+class File extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = ['name',];
+    protected $guarded = [];
 
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
+    public $appends = [
+        'next_version_suffix',
+        'visible_name',
+    ];
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function getNextVersionSuffixAttribute(): string
+    {
+        return  '-v' . (string) ($this->version + 1);
+    }
+
+    public function getVisibleNameAttribute(): string
+    {
+        return $this->name . '.' . $this->extension;
     }
 
     public function categories(): array
