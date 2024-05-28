@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Interfaces\FileService;
-use App\Services\FileServiceImpl;
 use App\Interfaces\CategoryService;
-use Illuminate\Support\Facades\Auth;
+use App\Interfaces\FileService;
 use App\Services\CategoryServiceImpl;
+use App\Services\FileServiceImpl;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // For testing purposes
-        Auth::loginUsingId(1);
+        // For testing purposes: uncomment after all the migrations ran
+        // Auth::loginUsingId(1);
     }
 }

@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('slug');
             $table->string('name');
             $table->string('extension');
+
+            $table->unique(['slug', 'category_id', 'extension']);
         });
     }
 

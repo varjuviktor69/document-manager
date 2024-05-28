@@ -13,7 +13,7 @@ interface FileService
 {
     public function save(UploadedFile $file, int $categoryId): string|false;
 
-    public function findBySlugAndExtension(string $slug, string $extension): ?File;
+    public function findBySlugAndExtensionAndCategoryId(string $slug, string $extension, int $categoryId): ?File;
 
     public function getByCategoryId(int $categoryId): Collection;
 

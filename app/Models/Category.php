@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\Category as EnumsCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +12,10 @@ class Category extends Model
 {
     protected $guarded = [];
 
-    public $appends = ['sub_categories',];
+    public $appends = [
+        'sub_categories',
+        'ancestor_categories',
+    ];
 
     public function users(): HasMany
     {
@@ -22,7 +24,7 @@ class Category extends Model
 
     public function files(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(File::class);
     }
 
     public function getSubCategoriesAttribute(): array
@@ -53,10 +55,28 @@ class Category extends Model
         return $results;
     }
 
+    public function getAncestorCategoriesAttribute(): array
+    {
+        return DB::select('WITH RECURSIVE ancestors AS (
+            SELECT id, parent_id
+            FROM categories
+            WHERE id = :id
+            UNION ALL
+            SELECT t.id, t.parent_id
+            FROM categories t
+            JOIN ancestors a ON t.id = a.parent_id
+        )
+        SELECT * FROM ancestors
+        WHERE ancestors.id != :id', [
+            'id' => $this->id,
+        ]);
+    }
+
+
     private function buildTree(array $subCategories, int $parentId ): array
     {
         $branch = [];
-    
+
         foreach ($subCategories as $subCategory) {
             if ($subCategory->parent_id === $parentId) {
                 $children = self::buildTree($subCategories, $subCategory->id);
@@ -68,7 +88,7 @@ class Category extends Model
                 $branch[] = $subCategory;
             }
         }
-    
+
         return $branch;
     }
 }

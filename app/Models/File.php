@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class File extends Model
 {
@@ -16,6 +17,7 @@ class File extends Model
     public $appends = [
         'next_version_suffix',
         'visible_name',
+        'path',
     ];
 
     public function category(): BelongsTo
@@ -48,5 +50,18 @@ class File extends Model
         ]);
 
         return $results;
+    }
+
+    public function getPathAttribute(): string
+    {
+        $category = $this->category;
+
+        $categorySlugs = array_map(function(stdClass $category): string {
+            return $category->slug;
+        }, $category->ancestor_categories);
+
+        $categorySlugs[] = $category->slug;
+        
+        return implode(DIRECTORY_SEPARATOR, $categorySlugs);
     }
 }
