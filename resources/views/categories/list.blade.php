@@ -1,5 +1,5 @@
 <div class="categories-container">
-    <ul class="categories-list">
+    <ul class="categories-list init-list">
         <li data-category-slug="{{ $defaultCategory->slug }}" data-id="{{ $defaultCategory->id }}" data-name="{{ $defaultCategory->name }}">
             {{ $defaultCategory->name }}
             <span class="close-indicator">&#9655</span>

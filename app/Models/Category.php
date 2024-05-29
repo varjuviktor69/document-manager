@@ -58,11 +58,11 @@ class Category extends Model
     public function getAncestorCategoriesAttribute(): array
     {
         return DB::select('WITH RECURSIVE ancestors AS (
-            SELECT id, parent_id
+            SELECT id, parent_id, slug, name
             FROM categories
             WHERE id = :id
             UNION ALL
-            SELECT t.id, t.parent_id
+            SELECT t.id, t.parent_id, t.slug, t.name
             FROM categories t
             JOIN ancestors a ON t.id = a.parent_id
         )

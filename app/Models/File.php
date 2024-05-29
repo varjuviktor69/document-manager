@@ -58,7 +58,7 @@ class File extends Model
 
         $categorySlugs = array_map(function(stdClass $category): string {
             return $category->slug;
-        }, $category->ancestor_categories);
+        }, array_reverse($category->ancestor_categories));
 
         $categorySlugs[] = $category->slug;
         
