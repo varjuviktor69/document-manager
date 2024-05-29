@@ -21,7 +21,7 @@ class FileServiceImpl implements FileService
         $baseName = pathinfo($fileName, PATHINFO_FILENAME);
         $slug = slugify(pathinfo($fileName, PATHINFO_FILENAME));
         $extensionsSlug = slugify($file->getClientOriginalExtension());
-        $fileModel = $this->findBySlugAndExtension($slug, $extensionsSlug);
+        $fileModel = $this->findBySlugAndExtensionAndCategoryId($slug, $extensionsSlug, $categoryId);
 
         if ($fileModel) {
             $versionSuffix = $fileModel->next_version_suffix;
@@ -30,7 +30,7 @@ class FileServiceImpl implements FileService
         } else {
             $versionSuffix = getDefaultVersionSuffix();
 
-            File::create([
+            $fileModel = File::create([
                 'name' => $baseName,
                 'slug' => $slug,
                 'version' => 1,
@@ -41,14 +41,15 @@ class FileServiceImpl implements FileService
 
         $name = $slug . $versionSuffix . '.' . $extensionsSlug;
 
-        return $file->storeAs('', $name);
+        return $file->storeAs($fileModel->path, $name);
     }
 
-    public function findBySlugAndExtension(string $slug, string $extension): ?File
+    public function findBySlugAndExtensionAndCategoryId(string $slug, string $extension, int $categoryId): ?File
     {
         return File::where([
             'slug' => $slug,
-            'extension' => $extension
+            'extension' => $extension,
+            'category_id' => $categoryId,
         ])->first();
     }
 

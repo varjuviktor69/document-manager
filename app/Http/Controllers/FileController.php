@@ -41,9 +41,9 @@ class FileController extends Controller
         $this->request->validate(['version' => 'required|integer']);
 
         $file = $this->fileService->findById($id);
-        $name = $this->fileService->getNameWithVersion((int) $this->request->version, $file);
+        $path = $file->path . DIRECTORY_SEPARATOR . $this->fileService->getNameWithVersion((int) $this->request->version, $file);
 
-        return Storage::download($name, $file->visible_name);
+        return Storage::download($path, $file->visible_name);
     }
 
     public function getByCategory(int $categoryId): JsonResponse

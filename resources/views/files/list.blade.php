@@ -3,12 +3,9 @@
 <div class="file-container">
     @foreach ($files as $file)
         <div class="file-list">
-            <div class="path-container">
-                <span>{{ $file->path }}</span>
-            </div>
             <div>
                 <a href="{{ route('files.get', ['id' => $file->id, 'version' => $file->version]) }}">
-                    {{ $file->name }}.{{  $file->extension }}
+                    {{ $file->path }}/{{ $file->name }}.{{  $file->extension }}
                 </a>
             </div>
             <div class="version-select-container">

@@ -25,3 +25,7 @@ ul {
     gap: 10px;
     margin-bottom: 10px;
 }
+
+ul.categories-list:not(.init-list) {
+    padding-left: 10px;
+}
